@@ -24,7 +24,7 @@ $app->get('/hello/:name/:bla', function ($name, $bla) {
 	$info = curl_getinfo($curl);
 	$rsp_code = $info['http_code'];
 	
-	echo "Response: $resp, Code $rsp_code";
+	echo "Response: $resp<br>Code $rsp_code";
 	// Close request to clear up some resources
 	curl_close($curl);
 });
