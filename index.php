@@ -6,7 +6,7 @@ require 'Slim/Slim.php';
 $app = new \Slim\Slim();
 
 $app->get('/hello/:name/:bla', function ($name, $bla) {
-    echo "Hello, $name $bla";
+    echo "Hello, $name $bla test";
 });
 
 $app->run();
