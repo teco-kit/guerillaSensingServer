@@ -45,6 +45,7 @@ function test_write_data($value) {
 	curl_close($curl);
 }
 
+// Add a device to the device list.
 function add_device() {
 	// Example request:
 	//
@@ -112,6 +113,7 @@ function add_device() {
 	echo json_encode($result);
 }
 
+// Write sensor data to the TSDB.
 function write_data() {
 	// Example request:
 	//
@@ -179,7 +181,37 @@ function write_data() {
 	echo json_encode($result);	
 }
 
-function read_data() 
+// Sends the query directly to the TSDB and returns the results.
+// NOTE: This is only for testing.
+function read_data($query) {
+	// Get cURL resource.
+	$curl = curl_init();
+	
+	// URL-encode query.
+	$query_url = urlencode($query);
+	
+	// Set some options.
+	curl_setopt_array($curl, array(
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_URL => 'http://docker.teco.edu:8086/db/data/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
+	));
+	
+	// Send the request & save response to $resp
+	$resp = curl_exec($curl);
+	
+	// Create table with written data and show it back to user.
+	$info = curl_getinfo($curl);
+	$rsp_code = $info['http_code'];
+	
+	// Close request to clear up some resources
+	curl_close($curl);
+	
+	// Directly return JSON from server.
+	echo $resp;
+}
+
+// Start REST API.
 $app->run();
 
 exit();
