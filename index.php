@@ -5,11 +5,14 @@ require 'Slim/Slim.php';
 
 $app = new \Slim\Slim();
 
+$app->get('/test_write_data/:value', 'test_write_data');
+$app->get('/read_data/:query', 'read_data');
+
 $app->post('/add_device/', 'add_device');
-$app->get('/write_data/:value', 'write_data');
+$app->post('/write_data/', 'write_data');
 
 // Test API to write some arbitrary data into the table "data" in "test_db".
-function write_data($value) {
+function test_write_data($value) {
     echo "<b>Writing $value to table 'data' in database 'test_db'.<br><br></b>";
 	
 	// Get cURL resource
@@ -43,6 +46,17 @@ function write_data($value) {
 }
 
 function add_device() {
+	// Example request:
+	//
+	//	{
+	//		"mac":"AB:22:78:E4:22:D9",
+	//		"lat":"123768.133",
+	//		"lon":"2736.123444",
+	//		"height":"88.2212",
+	//		"info":"Under tree",
+	//		"picture":"http://www.picture.example/1237hdu.jpg"
+	//	}
+	
 	// Read parameters from POST body.
 	$app = \Slim\Slim::getInstance();
 	$request = $app->request();
@@ -69,7 +83,7 @@ function add_device() {
 	$curl = curl_init();
 	$db = 'data';
 	$table = 'devices';
-	//"points":[[' . $nd_mac . ']]}]'
+
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
 		CURLOPT_URL => 'http://docker.teco.edu:8086/db/' . $db . '/series?u=root&p=root',
@@ -98,6 +112,74 @@ function add_device() {
 	echo json_encode($result);
 }
 
+function write_data() {
+	// Example request:
+	//
+	//	{
+	//		"mac":"AB:22:78:E4:22:D9",
+	//		"bat":"76",
+	//		"sens1":"12.33",
+	//		"sens2":"93.26633",
+	//		"sens3":"7.1",
+	//		"sens4":"8229.2",
+	//		"sens5":"22.83"
+	//	}
+	
+	// Read parameters from POST body and collect data.
+	$app = \Slim\Slim::getInstance();
+	$request = $app->request();
+	$body = $request->getBody();
+	$input = json_decode($body); 
+	
+	// MAC of device that provided the data.
+    $data_mac = $input->mac;
+	// Battery level of device.
+	$data_bat = $input->bat;
+	// Value of sensor 1.
+	$data_sens1 = $input->sens1;
+	// Value of sensor 2.
+	$data_sens2 = $input->sens2;
+	// Value of sensor 3.
+	$data_sens3 = $input->sens3;
+	// Value of sensor 4.
+	$data_sens4 = $input->sens4;
+	// Value of sensor 5.
+	$data_sens5 = $input->sens5;
+
+	// Done collecting data. Now write it to the TSDB.
+	$curl = curl_init();
+	$db = 'data';
+	$table = 'data';
+
+	curl_setopt_array($curl, array(
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_URL => 'http://docker.teco.edu:8086/db/' . $db . '/series?u=root&p=root',
+		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
+		CURLOPT_POST => 1,
+		CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
+								"columns":["mac","bat","sens1","sens2","sens3","sens4","sens5"],
+								"points":[["' . $data_mac . '","' . $data_bat . '",
+										   "' . $data_sens1 . '","' . $data_sens2 . '",
+										   "' . $data_sens3 . '","' . $data_sens4 . '",
+										   "' . $data_sens5 . '"]]}]'
+	));
+	
+	// Send the request & save response to $resp
+	$resp = curl_exec($curl);
+	
+	// Read response.
+	$info = curl_getinfo($curl);
+	$rsp_code = $info['http_code'];
+	
+	// Close request to clear up some resources.
+	curl_close($curl);
+	
+	// No error handling yet. Just print back results.
+	$result = "Code: " . $rsp_code . ". Data written.";
+	echo json_encode($result);	
+}
+
+function read_data() 
 $app->run();
 
 exit();
