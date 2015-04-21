@@ -120,11 +120,14 @@ function write_data() {
 	//	{
 	//		"mac":"AB:22:78:E4:22:D9",
 	//		"bat":"76",
-	//		"sens1":"12.33",
-	//		"sens2":"93.26633",
-	//		"sens3":"7.1",
-	//		"sens4":"8229.2",
-	//		"sens5":"22.83"
+	//		"temp":"23.84",
+	//		"hum":"67.26633",
+	//		"co2":"7.1",
+	//		"co":"8.26",
+	//		"no2":"22.83"
+	//		"o3":"9.54"
+	//		"dust":"83.90"
+	//		"uv":"33.94"
 	//	}
 	
 	// Read parameters from POST body and collect data.
@@ -137,17 +140,23 @@ function write_data() {
     $data_mac = $input->mac;
 	// Battery level of device.
 	$data_bat = $input->bat;
-	// Value of sensor 1.
-	$data_sens1 = $input->sens1;
-	// Value of sensor 2.
-	$data_sens2 = $input->sens2;
-	// Value of sensor 3.
-	$data_sens3 = $input->sens3;
-	// Value of sensor 4.
-	$data_sens4 = $input->sens4;
-	// Value of sensor 5.
-	$data_sens5 = $input->sens5;
-
+	// Value of sensor 1. (Temperature)
+	$data_temp = $input->temp;
+	// Value of sensor 2. (Humidity)
+	$data_hum = $input->hum;
+	// Value of sensor 3. (CO2)
+	$data_co2 = $input->co2;
+	// Value of sensor 4. (CO)
+	$data_co = $input->co;
+	// Value of sensor 5. (NO2)
+	$data_no2 = $input->no2;
+	// Value of sensor 6. (O3)
+	$data_o3 = $input->o3;
+	// Value of sensor 7. (Fine dust)
+	$data_dust = $input->dust;
+	// Value of sensor 8. (UV)
+	$data_uv = $input->uv;
+	
 	// Done collecting data. Now write it to the TSDB.
 	$curl = curl_init();
 	$db = 'data';
@@ -159,11 +168,12 @@ function write_data() {
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
 		CURLOPT_POST => 1,
 		CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
-								"columns":["mac","bat","sens1","sens2","sens3","sens4","sens5"],
+								"columns":["mac","bat","temp","hum","co2","co","no2","o3","dust","uv"],
 								"points":[["' . $data_mac . '","' . $data_bat . '",
-										   "' . $data_sens1 . '","' . $data_sens2 . '",
-										   "' . $data_sens3 . '","' . $data_sens4 . '",
-										   "' . $data_sens5 . '"]]}]'
+										   "' . $data_temp . '","' . $data_hum . '",
+										   "' . $data_co2 . '","' . $data_co . '",
+										   "' . $data_no2 . '","' . $data_o3 . '",
+										   "' . $data_dust . '","' . $data_uv . '"]]}]'
 	));
 	
 	// Send the request & save response to $resp
