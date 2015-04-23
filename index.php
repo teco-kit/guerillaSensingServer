@@ -119,7 +119,9 @@ function write_data() {
 	//
 	//	{
 	//		"mac":"AB:22:78:E4:22:D9",
-	//		"bat":"76",
+	//		"height":"9.23",
+	//		"lat":"83.12314",
+	//		"lon":"79.23133",
 	//		"temp":"23.84",
 	//		"hum":"67.26633",
 	//		"co2":"7.1",
@@ -138,8 +140,12 @@ function write_data() {
 	
 	// MAC of device that provided the data.
     $data_mac = $input->mac;
-	// Battery level of device.
-	$data_bat = $input->bat;
+	// Height of device.
+	$data_height = $input->height;
+	// Latitude of device.
+	$data_lat = $input->lat;
+	// Longitude level of device.
+	$data_lon = $input->lon;
 	// Value of sensor 1. (Temperature)
 	$data_temp = $input->temp;
 	// Value of sensor 2. (Humidity)
@@ -168,8 +174,9 @@ function write_data() {
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
 		CURLOPT_POST => 1,
 		CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
-								"columns":["mac","bat","temp","hum","co2","co","no2","o3","dust","uv"],
-								"points":[["' . $data_mac . '","' . $data_bat . '",
+								"columns":["mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
+								"points":[["' . $data_mac . '","' . $data_height . '",
+										   "' . $data_lat . '","' . $data_lon . '", 
 										   "' . $data_temp . '","' . $data_hum . '",
 										   "' . $data_co2 . '","' . $data_co . '",
 										   "' . $data_no2 . '","' . $data_o3 . '",
