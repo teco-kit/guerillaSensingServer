@@ -149,7 +149,7 @@ function write_data() {
 	foreach ($input_array as $input) {
 	
 		// Timestamp
-		$data_time = $input["time"];
+		$data_time = intval($input["time"]);
 		// MAC of device that provided the data.
 		$data_mac = $input["mac"];
 		// Height of device.
@@ -184,7 +184,7 @@ function write_data() {
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
 									"columns":["time","mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
-									"points":[["' . $data_time . '","' . $data_mac . '","' . $data_height . '",
+									"points":[[' . $data_time . ',"' . $data_mac . '","' . $data_height . '",
 											   "' . $data_lat . '","' . $data_lon . '", 
 											   "' . $data_temp . '","' . $data_hum . '",
 											   "' . $data_co2 . '","' . $data_co . '",
