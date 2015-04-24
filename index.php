@@ -137,7 +137,7 @@ function write_data() {
 	$app = \Slim\Slim::getInstance();
 	$request = $app->request();
 	$body = $request->getBody();
-	$input_array = json_decode($body); 
+	$input_array = json_decode($body, true); 
 	
 	$curl = curl_init();
 	$db = 'data';
