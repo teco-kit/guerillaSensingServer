@@ -146,9 +146,8 @@ function write_data() {
 	$rsp_code = 0;
 	$resp = "";
 	
-	foreach ($input_array as $input_json) {
-		$input = json_decode($input_json, true);
-		
+	foreach ($input_array as $input) {
+	
 		// Timestamp
 		$data_time = $input["time"];
 		// MAC of device that provided the data.
