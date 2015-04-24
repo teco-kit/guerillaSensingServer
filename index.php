@@ -147,7 +147,7 @@ function write_data() {
 	$resp = "";
 	
 	foreach ($input_array as $input_json) {
-		$input = json_decode($input_json)
+		$input = json_decode($input_json, true);
 		
 		// Timestamp
 		$data_time = $input["time"];
