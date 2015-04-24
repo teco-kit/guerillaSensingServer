@@ -118,6 +118,7 @@ function write_data() {
 	// Example request:
 	//
 	//	{
+	//		"time":"1387347732"
 	//		"mac":"AB:22:78:E4:22:D9",
 	//		"height":"9.23",
 	//		"lat":"83.12314",
@@ -136,59 +137,71 @@ function write_data() {
 	$app = \Slim\Slim::getInstance();
 	$request = $app->request();
 	$body = $request->getBody();
-	$input = json_decode($body); 
+	$input_array = json_decode($body); 
 	
-	// MAC of device that provided the data.
-    $data_mac = $input->mac;
-	// Height of device.
-	$data_height = $input->height;
-	// Latitude of device.
-	$data_lat = $input->lat;
-	// Longitude level of device.
-	$data_lon = $input->lon;
-	// Value of sensor 1. (Temperature)
-	$data_temp = $input->temp;
-	// Value of sensor 2. (Humidity)
-	$data_hum = $input->hum;
-	// Value of sensor 3. (CO2)
-	$data_co2 = $input->co2;
-	// Value of sensor 4. (CO)
-	$data_co = $input->co;
-	// Value of sensor 5. (NO2)
-	$data_no2 = $input->no2;
-	// Value of sensor 6. (O3)
-	$data_o3 = $input->o3;
-	// Value of sensor 7. (Fine dust)
-	$data_dust = $input->dust;
-	// Value of sensor 8. (UV)
-	$data_uv = $input->uv;
-	
-	// Done collecting data. Now write it to the TSDB.
 	$curl = curl_init();
 	$db = 'data';
 	$table = 'data';
+	
+	$rsp_code = 0;
+	$resp = "";
+	
+	foreach ($input_array as $input_json) {
+		$input = json_decode($input_json)
+		
+		// Timestamp
+		$data_time = $input["time"];
+		// MAC of device that provided the data.
+		$data_mac = $input["mac"];
+		// Height of device.
+		$data_height = $input["height"];
+		// Latitude of device.
+		$data_lat = $input["lat"];
+		// Longitude level of device.
+		$data_lon = $input["lon"];
+		// Value of sensor 1. (Temperature)
+		$data_temp = $input["temp"];
+		// Value of sensor 2. (Humidity)
+		$data_hum = $input["hum"];
+		// Value of sensor 3. (CO2)
+		$data_co2 = $input["co2"];
+		// Value of sensor 4. (CO)
+		$data_co = $input["co"];
+		// Value of sensor 5. (NO2)
+		$data_no2 = $input["no2"];
+		// Value of sensor 6. (O3)
+		$data_o3 = $input["o3"];
+		// Value of sensor 7. (Fine dust)
+		$data_dust = $input["dust"];
+		// Value of sensor 8. (UV)
+		$data_uv = $input["uv"];
+		
+		// Done collecting data. Now write it to the TSDB.
 
-	curl_setopt_array($curl, array(
-		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8086/db/' . $db . '/series?u=root&p=root',
-		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
-		CURLOPT_POST => 1,
-		CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
-								"columns":["mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
-								"points":[["' . $data_mac . '","' . $data_height . '",
-										   "' . $data_lat . '","' . $data_lon . '", 
-										   "' . $data_temp . '","' . $data_hum . '",
-										   "' . $data_co2 . '","' . $data_co . '",
-										   "' . $data_no2 . '","' . $data_o3 . '",
-										   "' . $data_dust . '","' . $data_uv . '"]]}]'
-	));
-	
-	// Send the request & save response to $resp
-	$resp = curl_exec($curl);
-	
-	// Read response.
-	$info = curl_getinfo($curl);
-	$rsp_code = $info['http_code'];
+		curl_setopt_array($curl, array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_URL => 'http://docker.teco.edu:8086/db/' . $db . '/series?u=root&p=root',
+			CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
+			CURLOPT_POST => 1,
+			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
+									"columns":["time","mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
+									"points":[["' . $data_time . '","' . $data_mac . '","' . $data_height . '",
+											   "' . $data_lat . '","' . $data_lon . '", 
+											   "' . $data_temp . '","' . $data_hum . '",
+											   "' . $data_co2 . '","' . $data_co . '",
+											   "' . $data_no2 . '","' . $data_o3 . '",
+											   "' . $data_dust . '","' . $data_uv . '"]]}]'
+		));
+		
+		// Send the request & save response to $resp
+		$resp = curl_exec($curl);
+		
+		// Read response.
+		$info = curl_getinfo($curl);
+		$rsp_code = $info['http_code'];
+		
+
+	}
 	
 	// Close request to clear up some resources.
 	curl_close($curl);
