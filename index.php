@@ -175,8 +175,12 @@ function write_data() {
 		// Value of sensor 8. (UV)
 		$data_uv = $input["uv"];
 		
+		// Sequence number will be a combination of latitude and longitude.
+		// This way, when duplicated data is uploaded it will have the same timestamp and sequence number
+		// in the DB on insertion, which means that the data will be overwritten.
+		$sequence_nr = (long) (((double) $data_lat) * 100000000 + ((double) $data_lon) * 100000000);
+		
 		// Done collecting data. Now write it to the TSDB.
-
 		curl_setopt_array($curl, array(
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_URL => 'http://docker.teco.edu:8086/db/' . $db . '/series?u=root&p=root',
@@ -184,8 +188,8 @@ function write_data() {
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
 									"time_precision":"ms",
-									"columns":["time","mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
-									"points":[[' . $data_time . ',"' . $data_mac . '","' . $data_height . '",
+									"columns":["time","sequence_number","mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
+									"points":[[' . $data_time . ',' . $sequence_nr . ',"' . $data_mac . '","' . $data_height . '",
 											   "' . $data_lat . '","' . $data_lon . '", 
 											   "' . $data_temp . '","' . $data_hum . '",
 											   "' . $data_co2 . '","' . $data_co . '",
