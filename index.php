@@ -178,7 +178,7 @@ function write_data() {
 		// Sequence number will be a combination of latitude and longitude.
 		// This way, when duplicated data is uploaded it will have the same timestamp and sequence number
 		// in the DB on insertion, which means that the data will be overwritten.
-		$sequence_nr = (long) (((double) $data_lat) * 100000000 + ((double) $data_lon) * 100000000);
+		$sequence_nr = (int) (((double) $data_lat) * 100000000 + ((double) $data_lon) * 100000000);
 		
 		// Done collecting data. Now write it to the TSDB.
 		curl_setopt_array($curl, array(
