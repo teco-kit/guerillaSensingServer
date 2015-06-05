@@ -118,7 +118,7 @@ function write_data() {
 	// Example request:
 	//
 	//	{
-	//		"time":"1387347732"
+	//		"time":"1387347732",
 	//		"mac":"AB:22:78:E4:22:D9",
 	//		"height":"9.23",
 	//		"lat":"83.12314",
