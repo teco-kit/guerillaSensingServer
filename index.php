@@ -142,12 +142,17 @@ function write_data() {
 	$curl = curl_init();
 	$db = 'data';
 	$table = 'data';
+	$upload_uuid_table = 'uuid';
 	
 	$rsp_code = 0;
 	$resp = "";
 	
 	foreach ($input_array as $input) {
 	
+		// Upload UUID of of this data point.
+		// Data that is uploaded together will have the same upload UUID.
+		$data_uuid = intval($input["id"]);
+		
 		// Timestamp
 		$data_time = intval($input["time"]);
 		// MAC of device that provided the data.
@@ -175,10 +180,6 @@ function write_data() {
 		// Value of sensor 8. (UV)
 		$data_uv = $input["uv"];
 		
-		// Sequence number will be a combination of latitude and longitude.
-		// This way, when duplicated data is uploaded it will have the same timestamp and sequence number
-		// in the DB on insertion, which means that the data will be overwritten.
-		$sequence_nr = (int) (((double) $data_lat) * 100000000 + ((double) $data_lon) * 100000000);
 		
 		// Done collecting data. Now write it to the TSDB.
 		curl_setopt_array($curl, array(
@@ -188,8 +189,8 @@ function write_data() {
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
 									"time_precision":"ms",
-									"columns":["time","sequence_number","mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
-									"points":[[' . $data_time . ',' . $sequence_nr . ',"' . $data_mac . '","' . $data_height . '",
+									"columns":["time","mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
+									"points":[[' . $data_time . ',"' . $data_mac . '","' . $data_height . '",
 											   "' . $data_lat . '","' . $data_lon . '", 
 											   "' . $data_temp . '","' . $data_hum . '",
 											   "' . $data_co2 . '","' . $data_co . '",
@@ -204,6 +205,18 @@ function write_data() {
 		$info = curl_getinfo($curl);
 		$rsp_code = $info['http_code'];
 		
+		// Now write the UUID of this upload into table of upload UUIDs.
+		// Put 0 as time and the UUID as sequence_number so duplicate UUIDs get overwritten.
+		// This makes sure there are no duplicates in this table.
+		curl_setopt_array($curl, array(
+			CURLOPT_POSTFIELDS => '[{"name":"' . $upload_uuid_table . '",
+									"time_precision":"ms",
+									"columns":["time","sequence_number","uuid"],
+									"points":[[' . "0" . ',' . $upload_uuid_table . ',"' . $upload_uuid_table . '"]]}]'
+		));
+		
+		// Send the request.
+		curl_exec($curl);		
 
 	}
 	
