@@ -317,7 +317,7 @@ function check_uuids() {
 	$needed_ids .= "}";
 	
 	// Directly return JSON from server.
-	echo $needed_ids;
+	echo $resp;
 }
 
 
