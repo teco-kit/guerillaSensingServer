@@ -207,13 +207,11 @@ function write_data() {
 		$rsp_code = $info['http_code'];
 		
 		// Now write the UUID of this upload into table of upload UUIDs.
-		// Put 0 as time and the UUID as sequence_number so duplicate UUIDs get overwritten.
-		// This makes sure there are no duplicates in this table.
 		curl_setopt_array($curl, array(
 			CURLOPT_POSTFIELDS => '[{"name":"' . $upload_uuid_table . '",
 									"time_precision":"ms",
-									"columns":["time","sequence_number","uuid"],
-									"points":[[' . "0" . ',' . $data_uuid . ',"' . $data_uuid . '"]]}]'
+									"columns":["uuid"],
+									"points":[[' . '"' . $data_uuid . '"]]}]'
 		));
 		
 		// Send the request.
