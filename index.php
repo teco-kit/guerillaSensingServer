@@ -10,6 +10,7 @@ $app->get('/read_data/:query', 'read_data');
 
 $app->post('/add_device/', 'add_device');
 $app->post('/write_data/', 'write_data');
+$app->post('/check_uuids/', 'check_uuids');
 
 // Test API to write some arbitrary data into the table "data" in "test_db".
 function test_write_data($value) {
@@ -212,7 +213,7 @@ function write_data() {
 			CURLOPT_POSTFIELDS => '[{"name":"' . $upload_uuid_table . '",
 									"time_precision":"ms",
 									"columns":["time","sequence_number","uuid"],
-									"points":[[' . "0" . ',' . $upload_uuid_table . ',"' . $upload_uuid_table . '"]]}]'
+									"points":[[' . "0" . ',' . $data_uuid . ',"' . $data_uuid . '"]]}]'
 		));
 		
 		// Send the request.
@@ -257,6 +258,54 @@ function read_data($query) {
 	// Directly return JSON from server.
 	echo $resp;
 }
+
+// Takes a list of upload UUIDs and returns a subset of those IDs.
+// The returned IDs are the IDs of uploads that are not on the server yet.
+function check_uuids() {
+	// Get cURL resource.
+	$curl = curl_init();
+	
+	// Read parameters from POST body and collect data.
+	$app = \Slim\Slim::getInstance();
+	$request = $app->request();
+	$body = $request->getBody();
+	$uuid_array = json_decode($body, true); 
+	$upload_uuid_table = 'uuid';
+
+	$query_url = "SELECT uuid FROM uuid";
+	$i = 0;
+
+	foreach ($uuid_array as $uuid) {
+		// Build query that returns all UUIDs that we do not need (already in DB).
+		if ($i == 0) {
+			query_url .= " WHERE uuid = " . $uuid
+		} else {
+			$query_url .= " or UUID = " . $uuid;
+		}
+
+		$i++;
+	}
+		
+	// Set some options.
+	curl_setopt_array($curl, array(
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_URL => 'http://docker.teco.edu:8086/db/data/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
+	));
+	
+	// Send the request & save response to $resp
+	$resp = curl_exec($curl);
+	
+	$info = curl_getinfo($curl);
+	$rsp_code = $info['http_code'];
+	
+	// Close request to clear up some resources
+	curl_close($curl);
+	
+	// Directly return JSON from server.
+	echo $resp;
+}
+
 
 // Start REST API.
 $app->run();
