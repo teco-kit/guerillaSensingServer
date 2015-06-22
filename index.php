@@ -306,7 +306,7 @@ function check_uuids() {
 	curl_close($curl);
 	
 	// Check which IDs we need.
-	$needed_ids = "{";
+	$needed_ids = "";
 	foreach ($uuid_array as $uuid) {
 		// Build query that returns all UUIDs that we do not need (already in DB).
 		if (strpos($resp,$uuid) !== false) {
@@ -317,10 +317,9 @@ function check_uuids() {
 
 		$i++;
 	}
-	$needed_ids .= "}";
 	
 	// Directly return JSON from server.
-	echo $needed_ids . " - " . $resp . " - " . $query_url;
+	echo $needed_ids;
 }
 
 
