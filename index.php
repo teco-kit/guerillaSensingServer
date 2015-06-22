@@ -286,6 +286,9 @@ function check_uuids() {
 		$i++;
 	}
 		
+	// Encode as URL.
+	$query_url = urlencode($query_url);
+	
 	// Set some options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
@@ -317,7 +320,7 @@ function check_uuids() {
 	$needed_ids .= "}";
 	
 	// Directly return JSON from server.
-	echo $resp . " - " . $query_url;
+	echo $needed_ids . " - " . $resp . " - " . $query_url;
 }
 
 
