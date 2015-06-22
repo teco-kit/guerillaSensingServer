@@ -275,8 +275,35 @@ function check_uuids() {
 	$query_url = "SELECT uuid FROM uuid";
 	$i = 0;
 
+	foreach ($uuid_array as $uuid) {
+		// Build query that returns all UUIDs that we do not need (already in DB).
+		if ($i == 0) {
+			$query_url .= " WHERE uuid = " . $uuid;
+		} else {
+			$query_url .= " or UUID = " . $uuid;
+		}
+
+		$i++;
+	}
+		
+	// Set some options.
+	curl_setopt_array($curl, array(
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_URL => 'http://docker.teco.edu:8086/db/data/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
+	));
 	
-	echo " ";
+	// Send the request & save response to $resp
+	$resp = curl_exec($curl);
+	
+	$info = curl_getinfo($curl);
+	$rsp_code = $info['http_code'];
+	
+	// Close request to clear up some resources
+	curl_close($curl);
+	
+	// Directly return JSON from server.
+	echo $resp;
 }
 
 
