@@ -152,7 +152,7 @@ function write_data() {
 	
 		// Upload UUID of of this data point.
 		// Data that is uploaded together will have the same upload UUID.
-		$data_uuid = intval($input["id"]);
+		$data_uuid = $input["id"];
 		
 		// Timestamp
 		$data_time = intval($input["time"]);
