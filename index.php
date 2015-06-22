@@ -280,7 +280,7 @@ function check_uuids() {
 		if ($i == 0) {
 			$query_url .= " WHERE uuid = " . $uuid;
 		} else {
-			$query_url .= " or uuid = " . $uuid;
+			$query_url .= " OR uuid = " . $uuid;
 		}
 
 		$i++;
@@ -317,7 +317,7 @@ function check_uuids() {
 	$needed_ids .= "}";
 	
 	// Directly return JSON from server.
-	echo $resp;
+	echo $resp . " - " - $query_url;
 }
 
 
