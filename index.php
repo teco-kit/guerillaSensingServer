@@ -296,14 +296,28 @@ function check_uuids() {
 	// Send the request & save response to $resp
 	$resp = curl_exec($curl);
 	
-	$info = curl_getinfo($curl);
-	$rsp_code = $info['http_code'];
+	//$info = curl_getinfo($curl);
+	//$rsp_code = $info['http_code'];
 	
 	// Close request to clear up some resources
 	curl_close($curl);
 	
+	// Check which IDs we need.
+	$needed_ids = "{";
+	foreach ($uuid_array as $uuid) {
+		// Build query that returns all UUIDs that we do not need (already in DB).
+		if (strpos($resp,$uuid) !== false) {
+			// UUID already in DB, so it is not needed.
+		} else {
+			$needed_ids .= $uuid . ";";
+		}
+
+		$i++;
+	}
+	$needed_ids .= "}";
+	
 	// Directly return JSON from server.
-	echo $resp;
+	echo $needed_ids;
 }
 
 
