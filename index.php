@@ -280,7 +280,7 @@ function check_uuids() {
 		if ($i == 0) {
 			$query_url .= " WHERE uuid = " . $uuid;
 		} else {
-			$query_url .= " or UUID = " . $uuid;
+			$query_url .= " or uuid = " . $uuid;
 		}
 
 		$i++;
