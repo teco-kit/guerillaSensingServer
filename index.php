@@ -278,9 +278,9 @@ function check_uuids() {
 	foreach ($uuid_array as $uuid) {
 		// Build query that returns all UUIDs that we do not need (already in DB).
 		if ($i == 0) {
-			$query_url .= " WHERE uuid = " . $uuid;
+			$query_url .= " WHERE uuid = '" . $uuid . "'";
 		} else {
-			$query_url .= " OR uuid = " . $uuid;
+			$query_url .= " OR uuid = '" . $uuid . "'";
 		}
 
 		$i++;
