@@ -206,6 +206,7 @@ function write_data() {
 		$info = curl_getinfo($curl);
 		$rsp_code = $info['http_code'];
 		
+		
 		// Now write the UUID of this upload into table of upload UUIDs.
 		curl_setopt_array($curl, array(
 			CURLOPT_POSTFIELDS => '[{"name":"' . $upload_uuid_table . '",
@@ -253,8 +254,15 @@ function read_data($query) {
 	// Close request to clear up some resources
 	curl_close($curl);
 	
-	// Directly return JSON from server.
-	echo $resp;
+	// If response code is not 200, the database might be down.
+	if ($rsp_code == 200) {
+		// Directly return JSON from server.
+		echo $resp;
+	} else {
+		$app->response->setStatus(404);
+		echo("Error: cURL returned $rsp_code");
+	}
+	
 }
 
 // Takes a list of upload UUIDs and returns a subset of those IDs.
