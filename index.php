@@ -115,7 +115,7 @@ function add_device() {
 }
 
 // Write sensor data to the TSDB.
-function write_data() use ($app){
+function write_data() {
 	// Example request:
 	//
 	//	{
