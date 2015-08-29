@@ -261,6 +261,14 @@ function read_data($query) {
 	} else {
 		$app->response->setStatus(404);
 		echo("Error: cURL returned $rsp_code");
+		
+		$msg = "The GuerillaSensing database seems to be offline.\nUser got response code $rsp_code";
+
+		// use wordwrap() if lines are longer than 70 characters
+		$msg = wordwrap($msg, 70);
+
+		// send email
+		mail("diener@teco.edu", "GuerillaSensing database issues", $msg);
 	}
 	
 }
@@ -333,6 +341,14 @@ function check_uuids() {
 	} else {
 		$app->response->setStatus(404);
 		echo("Error: cURL returned $rsp_code");
+				
+		$msg = "The GuerillaSensing database seems to be offline.\nUser got response code $rsp_code";
+
+		// use wordwrap() if lines are longer than 70 characters
+		$msg = wordwrap($msg, 70);
+
+		// send email
+		mail("diener@teco.edu", "GuerillaSensing database issues", $msg);
 	}
 }
 
