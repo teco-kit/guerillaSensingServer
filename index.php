@@ -5,12 +5,12 @@ require 'Slim/Slim.php';
 
 $app = new \Slim\Slim();
 
-$app->get('/test_write_data/:value', 'test_write_data');
-$app->get('/read_data/:query', 'read_data');
+$app->get('/test_write_data/:value', 'test_write_data' use ($app));
+$app->get('/read_data/:query', 'read_data' use ($app));
 
-$app->post('/add_device/', 'add_device');
-$app->post('/write_data/', 'write_data');
-$app->post('/check_uuids/', 'check_uuids');
+$app->post('/add_device/', 'add_device' use ($app));
+$app->post('/write_data/', 'write_data' use ($app));
+$app->post('/check_uuids/', 'check_uuids' use ($app));
 
 // Test API to write some arbitrary data into the table "data" in "test_db".
 function test_write_data($value) {
