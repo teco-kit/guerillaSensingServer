@@ -323,8 +323,8 @@ function check_uuids() {
 		// Directly return JSON from server.
 		echo $needed_ids;
 	} else {
+		$app->response->setStatus(404);
 		echo("Error: cURL returned $rsp_code");
-		http_response_code(404);
 	}
 }
 
