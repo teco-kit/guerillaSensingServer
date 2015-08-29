@@ -230,9 +230,11 @@ function write_data() {
 
 // Sends the query directly to the TSDB and returns the results.
 // NOTE: This is only for testing.
-function read_data($query) use ($app){
+function read_data($query) {
 	// Get cURL resource.
 	$curl = curl_init();
+	
+	$app = \Slim\Slim::getInstance();
 	
 	// URL-encode query.
 	$query_url = urlencode($query);
@@ -278,6 +280,8 @@ function read_data($query) use ($app){
 function check_uuids() use ($app){
 	// Get cURL resource.
 	$curl = curl_init();
+	
+	$app = \Slim\Slim::getInstance();
 	
 	// Read parameters from POST body and collect data.
 	$app = \Slim\Slim::getInstance();
