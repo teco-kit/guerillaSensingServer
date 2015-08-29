@@ -303,24 +303,29 @@ function check_uuids() {
 	
 	// Close request to clear up some resources
 	curl_close($curl);
-	
-	echo $rsp_code;
-	
-	// Check which IDs we need.
-	$needed_ids = "";
-	foreach ($uuid_array as $uuid) {
-		// Build query that returns all UUIDs that we do not need (already in DB).
-		if (strpos($resp,$uuid) !== false) {
-			// UUID already in DB, so it is not needed.
-		} else {
-			$needed_ids .= $uuid . ";";
-		}
 
-		$i++;
-	}
+	// If response code is not 200, the database might be down.
+	if ($rsp_code == 200) {
 	
-	// Directly return JSON from server.
-	echo $needed_ids;
+		// Check which IDs we need.
+		$needed_ids = "";
+		foreach ($uuid_array as $uuid) {
+			// Build query that returns all UUIDs that we do not need (already in DB).
+			if (strpos($resp,$uuid) !== false) {
+				// UUID already in DB, so it is not needed.
+			} else {
+				$needed_ids .= $uuid . ";";
+			}
+
+			$i++;
+		}
+		
+		// Directly return JSON from server.
+		echo $needed_ids;
+	} else {
+		http_response_code(404);
+		echo("Error: cURL returned $rsp_code");
+	}
 }
 
 
