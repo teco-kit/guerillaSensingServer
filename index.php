@@ -277,7 +277,7 @@ function read_data($query) {
 
 // Takes a list of upload UUIDs and returns a subset of those IDs.
 // The returned IDs are the IDs of uploads that are not on the server yet.
-function check_uuids() use ($app){
+function check_uuids(){
 	// Get cURL resource.
 	$curl = curl_init();
 	
