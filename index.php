@@ -270,7 +270,8 @@ function read_data($query) {
 		$msg = wordwrap($msg, 70);
 
 		// send email
-		mail("diener@teco.edu", "GuerillaSensing database issues", $msg);
+		// mail("diener@teco.edu", "GuerillaSensing database issues", $msg);
+		exec("echo \"From: teco <noreply@teco.edu>\nTo: diener <diener@teco.edu>\nSubject: Error\n\nThe database seems to be down.\" | msmtp --debug -a gmail diener@teco.edu");
 	}
 	
 }
@@ -352,7 +353,7 @@ function check_uuids(){
 		$msg = wordwrap($msg, 70);
 
 		// send email
-		mail("diener@teco.edu", "GuerillaSensing database issues", $msg);
+		exec("echo \"From: teco <noreply@teco.edu>\nTo: diener <diener@teco.edu>\nSubject: Error\n\nThe database seems to be down.\" | msmtp --debug -a gmail diener@teco.edu");
 	}
 }
 
