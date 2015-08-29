@@ -5,12 +5,12 @@ require 'Slim/Slim.php';
 
 $app = new \Slim\Slim();
 
-$app->get('/test_write_data/:value', 'test_write_data' use ($app));
-$app->get('/read_data/:query', 'read_data' use ($app));
+$app->get('/test_write_data/:value', 'test_write_data');
+$app->get('/read_data/:query', 'read_data');
 
-$app->post('/add_device/', 'add_device' use ($app));
-$app->post('/write_data/', 'write_data' use ($app));
-$app->post('/check_uuids/', 'check_uuids' use ($app));
+$app->post('/add_device/', 'add_device');
+$app->post('/write_data/', 'write_data');
+$app->post('/check_uuids/', 'check_uuids');
 
 // Test API to write some arbitrary data into the table "data" in "test_db".
 function test_write_data($value) {
@@ -115,7 +115,7 @@ function add_device() {
 }
 
 // Write sensor data to the TSDB.
-function write_data() {
+function write_data() use ($app){
 	// Example request:
 	//
 	//	{
@@ -230,7 +230,7 @@ function write_data() {
 
 // Sends the query directly to the TSDB and returns the results.
 // NOTE: This is only for testing.
-function read_data($query) {
+function read_data($query) use ($app){
 	// Get cURL resource.
 	$curl = curl_init();
 	
@@ -275,7 +275,7 @@ function read_data($query) {
 
 // Takes a list of upload UUIDs and returns a subset of those IDs.
 // The returned IDs are the IDs of uploads that are not on the server yet.
-function check_uuids() {
+function check_uuids() use ($app){
 	// Get cURL resource.
 	$curl = curl_init();
 	
