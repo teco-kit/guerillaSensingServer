@@ -297,11 +297,14 @@ function check_uuids() {
 	// Send the request & save response to $resp
 	$resp = curl_exec($curl);
 	
-	//$info = curl_getinfo($curl);
-	//$rsp_code = $info['http_code'];
+	$info = curl_getinfo($curl);
+	$rsp_code = $info['http_code'];
+	
 	
 	// Close request to clear up some resources
 	curl_close($curl);
+	
+	echo $rsp_code;
 	
 	// Check which IDs we need.
 	$needed_ids = "";
