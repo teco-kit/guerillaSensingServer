@@ -134,11 +134,6 @@ function iosb_write_data() {
 	$resp = "";
 	
 	foreach ($input_array as $input) {
-	
-		// Upload UUID of of this data point.
-		// Data that is uploaded together will have the same upload UUID.
-		$data_uuid = $input["id"];
-		
 		// Timestamp
 		$data_time = intval($input["time"]);
 		// MAC of device that provided the data.
