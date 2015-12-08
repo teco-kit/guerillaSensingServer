@@ -265,12 +265,12 @@ function mh_write_data() {
 		$data_time = $date->getTimestamp();
 		// MAC of device that provided the data.
 		$data_mac = $input["hum"];
-		$data_mac = $input["temp"];
-		$data_mac = $input["nox"];
-		$data_mac = $input["co"];
-		$data_mac = $input["nh3"];
-		$data_mac = $input["voc"];
-		$data_mac = $input["dust"];
+		$data_hum = $input["temp"];
+		$data_nox = $input["nox"];
+		$data_co = $input["co"];
+		$data_nh3 = $input["nh3"];
+		$data_voc = $input["voc"];
+		$data_dust = $input["dust"];
 
 		
 		
@@ -283,12 +283,10 @@ function mh_write_data() {
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
 									"time_precision":"ms",
 									"columns":["time","mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
-									"points":[[' . $data_time . ',"' . $data_mac . '","' . $data_height . '",
-											   "' . $data_lat . '","' . $data_lon . '", 
-											   "' . $data_temp . '","' . $data_hum . '",
-											   "' . $data_co2 . '","' . $data_co . '",
-											   "' . $data_no2 . '","' . $data_o3 . '",
-											   "' . $data_dust . '","' . $data_uv . '"]]}]'
+									"points":[[' . $data_time . ',"' . $data_hum . '","' . $data_temp . '",
+											   "' . $data_nox . '","' . $data_co . '", 
+											   "' . $data_nh3 . '","' . $data_voc . '",
+											   "' . $data_dust . '"]]}]'
 		));
 		
 		// Send the request & save response to $resp
