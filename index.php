@@ -475,7 +475,8 @@ function read_data($query) {
 	$app = \Slim\Slim::getInstance();
 	
 	// URL-encode query.
-	$query_url = urlencode($query);
+	//$query_url = urlencode($query);
+	$query_url = urlencode("select * from data;");
 	
 	// Set some options.
 	curl_setopt_array($curl, array(
