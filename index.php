@@ -282,7 +282,7 @@ function mh_write_data() {
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
 									"time_precision":"ms",
-									"columns":["time","mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
+									"columns":["time","hum","temp","nox","co","nh3","dust"],
 									"points":[[' . $data_time . ',"' . $data_hum . '","' . $data_temp . '",
 											   "' . $data_nox . '","' . $data_co . '", 
 											   "' . $data_nh3 . '","' . $data_dust . '"]]}]'
