@@ -270,7 +270,6 @@ function mh_write_data() {
 		$data_nox = $input["nox"];
 		$data_co = $input["co"];
 		$data_nh3 = $input["nh3"];
-		$data_voc = $input["voc"];
 		$data_dust = $input["dust"];
 
 		
@@ -286,8 +285,7 @@ function mh_write_data() {
 									"columns":["time","mac","height","lat","lon","temp","hum","co2","co","no2","o3","dust","uv"],
 									"points":[[' . $data_time . ',"' . $data_hum . '","' . $data_temp . '",
 											   "' . $data_nox . '","' . $data_co . '", 
-											   "' . $data_nh3 . '","' . $data_voc . '",
-											   "' . $data_dust . '"]]}]'
+											   "' . $data_nh3 . '","' . $data_dust . '"]]}]'
 		));
 		
 		// Send the request & save response to $resp
