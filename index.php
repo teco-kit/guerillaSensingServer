@@ -317,7 +317,7 @@ function mh_read_data($query) {
 	// Set some options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8086/db/iosb_demo/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8086/db/mh_demo/series?q=' . $query_url . '&u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
 	));
 	
@@ -338,15 +338,6 @@ function mh_read_data($query) {
 	} else {
 		$app->response->setStatus(404);
 		echo("Error: cURL returned $rsp_code");
-		
-		$msg = "The GuerillaSensing database seems to be offline.\nUser got response code $rsp_code";
-
-		// use wordwrap() if lines are longer than 70 characters
-		$msg = wordwrap($msg, 70);
-
-		// send email
-		// mail("diener@teco.edu", "GuerillaSensing database issues", $msg);
-		exec("echo \"From: teco <noreply@teco.edu>\nTo: diener <diener@teco.edu>\nSubject: Error\n\nThe database seems to be down.\" | msmtp --debug -a gmail diener@teco.edu");
 	}
 }
 
