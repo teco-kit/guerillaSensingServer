@@ -14,8 +14,8 @@ $app->post('/write_data/', 'write_data');
 $app->post('/check_uuids/', 'check_uuids');
 
 // Frauenhofer IOSB
-$app->post('/iosb_write_data/', 'mh_write_data');
-$app->get('/iosb_read_data/:query', 'mh_read_data');
+$app->post('/mh_write_data/', 'mh_write_data');
+$app->get('/mh_read_data/:query', 'mh_read_data');
 
 // Test API to write some arbitrary data into the table "data" in "test_db".
 function test_write_data($value) {
