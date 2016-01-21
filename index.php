@@ -265,8 +265,8 @@ function mh_write_data() {
 		// Timestamp
 		$data_time = $date->getTimestamp();
 		// MAC of device that provided the data.
-		$data_mac = $input["hum"];
-		$data_hum = $input["temp"];
+		$data_hum = $input["hum"];
+		$data_temp = $input["temp"];
 		$data_nox = $input["nox"];
 		$data_co = $input["co"];
 		$data_nh3 = $input["nh3"];
