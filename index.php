@@ -264,14 +264,14 @@ function mh_write_data() {
 	foreach ($input_array as $input) {
 		// Timestamp
 		$data_time = $date->getTimestamp();
-		// MAC of device that provided the data.
 		$data_hum = $input["hum"];
 		$data_temp = $input["temp"];
 		$data_nox = $input["nox"];
 		$data_co = $input["co"];
 		$data_nh3 = $input["nh3"];
 		$data_dust = $input["dust"];
-
+		$data_lat = $input["lat"];
+		$data_lon = $input["lon"];
 		
 		
 		// Done collecting data. Now write it to the TSDB.
@@ -282,9 +282,10 @@ function mh_write_data() {
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
 									"time_precision":"ms",
-									"columns":["time","hum","temp","nox","co","nh3","dust"],
+									"columns":["time","hum","temp","nox","co","lat","lon","nh3","dust"],
 									"points":[[' . $data_time . ',"' . $data_hum . '","' . $data_temp . '",
 											   "' . $data_nox . '","' . $data_co . '", 
+											   "' . $data_lat . '","' . $data_lon . '",
 											   "' . $data_nh3 . '","' . $data_dust . '"]]}]'
 		));
 		
