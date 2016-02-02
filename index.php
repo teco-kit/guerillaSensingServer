@@ -270,6 +270,7 @@ function mh_write_data() {
 		$data_co = $input["co"];
 		$data_nh3 = $input["nh3"];
 		$data_dust = $input["dust"];
+		$data_voc = $input["voc"];
 		$data_lat = $input["lat"];
 		$data_lon = $input["lon"];
 		
@@ -282,11 +283,11 @@ function mh_write_data() {
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
 									"time_precision":"ms",
-									"columns":["time","hum","temp","nox","co","lat","lon","nh3","dust"],
+									"columns":["time","hum","temp","nox","co","lat","lon","nh3","voc","dust"],
 									"points":[[' . $data_time . ',"' . $data_hum . '","' . $data_temp . '",
 											   "' . $data_nox . '","' . $data_co . '", 
 											   "' . $data_lat . '","' . $data_lon . '",
-											   "' . $data_nh3 . '","' . $data_dust . '"]]}]'
+											   "' . $data_nh3 . '","' . $data_voc . '","' . $data_dust . '"]]}]'
 		));
 		
 		// Send the request & save response to $resp
