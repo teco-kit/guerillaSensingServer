@@ -8,6 +8,7 @@ $app = new \Slim\Slim();
 $app->get('/test_write_data/:value', 'test_write_data');
 $app->get('/read_data/:query', 'read_data');
 $app->get('/tsdb_query_data/', 'tsdb_query_data');
+$app->get('/mh_db_access/:query', 'mh_db_access');
 
 $app->post('/add_device/', 'add_device');
 $app->post('/write_data/', 'write_data');
@@ -473,6 +474,51 @@ function read_data($query) {
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
 		CURLOPT_URL => 'http://docker.teco.edu:8086/db/data/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
+	));
+	
+	// Send the request & save response to $resp
+	$resp = curl_exec($curl);
+	
+	// Create table with written data and show it back to user.
+	$info = curl_getinfo($curl);
+	$rsp_code = $info['http_code'];
+	
+	// Close request to clear up some resources
+	curl_close($curl);
+	
+	// If response code is not 200, the database might be down.
+	if ($rsp_code == 200) {
+		// Directly return JSON from server.
+		echo $resp;
+	} else {
+		$app->response->setStatus(404);
+		echo("Error: cURL returned $rsp_code");
+		
+		$msg = "The GuerillaSensing database seems to be offline.\nUser got response code $rsp_code";
+
+		// use wordwrap() if lines are longer than 70 characters
+		$msg = wordwrap($msg, 70);
+
+		// send email
+		// mail("diener@teco.edu", "GuerillaSensing database issues", $msg);
+		exec("echo \"From: teco <noreply@teco.edu>\nTo: diener <diener@teco.edu>\nSubject: Error\n\nThe database seems to be down.\" | msmtp --debug -a gmail diener@teco.edu");
+	}
+}
+
+function mh_db_access($query) {
+	// Get cURL resource.
+	$curl = curl_init();
+	
+	$app = \Slim\Slim::getInstance();
+	
+	// URL-encode query.
+	$query_url = urlencode($query);
+	
+	// Set some options.
+	curl_setopt_array($curl, array(
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_URL => 'http://docker.teco.edu:8086/db/mh_pressure/series?q=' . $query_url . '&u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
 	));
 	
