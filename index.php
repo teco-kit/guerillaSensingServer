@@ -279,7 +279,7 @@ function mh_write_data() {
 		// Done collecting data. Now write it to the TSDB.
 		curl_setopt_array($curl, array(
 			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_URL => 'http://docker.teco.edu:8096/db/' . $db . '/series?u=root&p=root',
+			CURLOPT_URL => 'http://docker.teco.edu:8096/db/' . $db . '/series?u=mh_root&p=mannhummeladmin',
 			CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
@@ -320,7 +320,7 @@ function mh_read_data($query) {
 	// Set some options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8096/db/mh_demo/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8096/db/mh_demo/series?q=' . $query_url . '&u=mh_root&p=mannhummeladmin',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
 	));
 	
