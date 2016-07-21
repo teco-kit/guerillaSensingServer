@@ -28,7 +28,7 @@ function test_write_data($value) {
 	// Set cURL options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8086/db/test_db/series?u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8096/db/test_db/series?u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
 		CURLOPT_POST => 1,
 		CURLOPT_POSTFIELDS => '[{"name":"data","columns":["val"],"points":[[' . $value . ']]}]'
@@ -94,7 +94,7 @@ function add_device() {
 
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8086/db/' . $db . '/series?u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8096/db/' . $db . '/series?u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
 		CURLOPT_POST => 1,
 		CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
@@ -167,7 +167,7 @@ function iosb_write_data() {
 		// Done collecting data. Now write it to the TSDB.
 		curl_setopt_array($curl, array(
 			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_URL => 'http://docker.teco.edu:8086/db/' . $db . '/series?u=root&p=root',
+			CURLOPT_URL => 'http://docker.teco.edu:8096/db/' . $db . '/series?u=root&p=root',
 			CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
@@ -210,7 +210,7 @@ function iosb_read_data($query) {
 	// Set some options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8086/db/iosb_demo/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8096/db/iosb_demo/series?q=' . $query_url . '&u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
 	));
 	
@@ -415,7 +415,7 @@ function write_data() {
 		// Done collecting data. Now write it to the TSDB.
 		curl_setopt_array($curl, array(
 			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_URL => 'http://docker.teco.edu:8086/db/' . $db . '/series?u=root&p=root',
+			CURLOPT_URL => 'http://docker.teco.edu:8096/db/' . $db . '/series?u=root&p=root',
 			CURLOPT_USERAGENT => 'GuerillaSensingPHPServer',
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => '[{"name":"' . $table . '",
@@ -473,7 +473,7 @@ function read_data($query) {
 	// Set some options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8086/db/data/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8096/db/data/series?q=' . $query_url . '&u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
 	));
 	
@@ -518,7 +518,7 @@ function mh_db_access($query) {
 	// Set some options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8086/db/mh_pressure/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8096/db/mh_pressure/series?q=' . $query_url . '&u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
 	));
 	
@@ -586,7 +586,7 @@ function check_uuids(){
 	// Set some options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8086/db/data/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8096/db/data/series?q=' . $query_url . '&u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
 	));
 	
@@ -646,7 +646,7 @@ function tsdb_query_data() {
 	// Set some options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8089/db/data/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8096/db/data/series?q=' . $query_url . '&u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
 	));
 	
