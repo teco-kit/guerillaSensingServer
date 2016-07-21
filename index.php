@@ -646,7 +646,7 @@ function tsdb_query_data() {
 	// Set some options.
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => 'http://docker.teco.edu:8086/db/data/series?q=' . $query_url . '&u=root&p=root',
+		CURLOPT_URL => 'http://docker.teco.edu:8089/db/data/series?q=' . $query_url . '&u=root&p=root',
 		CURLOPT_USERAGENT => 'GuerillaSensingPHPServer'
 	));
 	
